@@ -15,7 +15,7 @@ import { Mail, Link2, Network, FileText } from '@lucide/vue'
       <pre>+++ SECURE TRANSMISSION CHANNEL +++
 
 CHANNEL STATUS: READY
-IDENTITY: DUŠKO SOFRONIEVSKI
+IDENTITY: DUSHKO SOFRONIEVSKI
 AWAITING MESSAGE...</pre>
 
       <ul class="transmission__links">
