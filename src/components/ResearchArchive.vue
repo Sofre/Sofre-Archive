@@ -7,7 +7,7 @@ import SectionHeader from './SectionHeader.vue'
     <SectionHeader
       overline="RESEARCH ARCHIVE"
       title="THE FORBIDDEN RESEARCH ARCHIVE"
-      subtitle="Comparative analysis of modern detection systems for intelligent transportation applications."
+      subtitle="Research Papers"
     />
 
     <article class="research__publication" aria-labelledby="research-title">
