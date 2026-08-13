@@ -89,8 +89,8 @@ const scholasticaSummary = [
 
 const sections = [
   {
-    id: 'imperial-record',
-    label: 'IMPERIAL RECORD',
+    id: 'imperium-record',
+    label: 'IMPERIUM RECORD',
     subtitle: 'Profile / Doctrine',
     info: 'Professional summary, specialization focus, and engineering operating principles.',
   },
@@ -183,23 +183,23 @@ useScrollAnimation('.reveal')
 
     <main>
       <section id="hero" class="hero reveal" aria-labelledby="archive-title">
-        <p class="hero__overline">THE IMPERIAL ENGINEERING ARCHIVE</p>
-        <h1 id="archive-title">DUŠKO SOFRONIEVSKI</h1>
-        <p class="hero__designation">TECH-PRIEST • SOFTWARE ENGINEER</p>
+        <p class="hero__overline">THE IMPERIUM's ENGINEERING ARCHIVE</p>
+        <h1 id="archive-title">DUSHKO SOFRONIEVSKI</h1>
+        <p class="hero__designation">BSc • SOFTWARE ENGINEER</p>
         <p class="hero__secondary">ADEPT OF THE MACHINE SPIRIT</p>
         <p class="hero__specialization">BACKEND • INDUSTRIAL AUTOMATION • ARTIFICIAL INTELLIGENCE</p>
 
         <div class="hero__status-layout">
           <SystemStatus />
-          <figure class="hero__portrait" aria-label="Duško Sofronievski portrait">
-            <img :src="mePortrait" alt="Portrait of Duško Sofronievski" loading="eager" decoding="async" />
+          <figure class="hero__portrait" aria-label="Dushko Sofronievski portrait">
+            <img :src="mePortrait" alt="Portrait of Dushko Sofronievski" loading="eager" decoding="async" />
           </figure>
         </div>
 
         <div class="hero__actions">
-          <button type="button" @click="goTo('imperial-record')">
+          <button type="button" @click="goTo('imperium-record')">
             <ArrowDownToLine :size="16" />
-            ACCESS IMPERIAL RECORD
+            ACCESS IMPERIUM RECORD
           </button>
           <button type="button" class="secondary" @click="goTo('service-history')">
             <BookOpenCheck :size="16" />

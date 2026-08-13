@@ -3,10 +3,10 @@ import { onMounted, ref } from 'vue'
 import SectionHeader from './SectionHeader.vue'
 
 const terminalLines = [
-  '+++ IMPERIAL RECORD +++',
+  '+++ IMPERIUM RECORD +++',
   '',
   'DESIGNATION',
-  'DUŠKO SOFRONIEVSKI',
+  'DUSHKO SOFRONIEVSKI',
   '',
   'CLASS',
   'SOFTWARE ENGINEER',
@@ -76,10 +76,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <section id="imperial-record" class="personnel-record section reveal" aria-labelledby="record-title">
+  <section id="imperium-record" class="personnel-record section reveal" aria-labelledby="record-title">
     <SectionHeader
-      overline="IMPERIAL RECORD"
-      title="PURITY EDICT // OPERATIONAL DOCTRINE"
+      overline="IMPERIUM RECORD"
+      title="PURITY EDICT"
       subtitle="A technical record of systems, machines and artificial intelligence."
     />
 
@@ -87,7 +87,7 @@ onMounted(() => {
       <pre class="personnel-record__terminal" aria-live="polite">{{ typedTerminalLines.join('\n') }}<span v-if="!typingFinished" class="personnel-record__terminal-cursor" aria-hidden="true" /></pre>
 
       <article class="personnel-record__archive" aria-live="polite">
-        <h3 id="record-title">Duško Sofronievski</h3>
+        <h3 id="record-title"></h3>
         <p>Graduate in Software Engineering with hands-on experience in backend development, web technologies, PLC programming, and industrial automation. I build reliable systems across software engineering, automation, and AI-assisted workflows, with a focus on real-world integration and long-term architectural clarity.</p>
         <p>My objective is to work in a Software Engineering role where I can contribute to meaningful projects, continue learning across all areas of technology, and grow toward a System Architect career. I value disciplined engineering, practical problem solving, and the ability to connect complex systems into dependable solutions.</p>
       </article>

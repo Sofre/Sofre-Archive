@@ -46,7 +46,7 @@ onUnmounted(() => {
 <template>
   <header class="imperial-nav">
     <div class="imperial-nav__bar">
-      <p class="imperial-nav__sigil">IMPERIAL ARCHIVE</p>
+      <p class="imperial-nav__sigil">IMPERIUM ARCHIVE</p>
       <button class="imperial-nav__toggle" type="button" aria-label="Toggle archive navigation" @click="mobileOpen = !mobileOpen">
         <Menu v-if="!mobileOpen" :size="20" />
         <X v-else :size="20" />
