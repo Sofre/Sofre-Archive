@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import { Menu, X } from '@lucide/vue'
+import { Menu, Monitor, X } from '@lucide/vue'
 
 type NavSection = { id: string; label: string; subtitle: string; info: string }
 
@@ -45,6 +45,10 @@ const scrollToSection = (id: string) => {
   mobileOpen.value = false
 }
 
+const openSpiritCommand = () => {
+  window.dispatchEvent(new CustomEvent('open-spirit-command'))
+}
+
 onMounted(() => {
   updateActiveSection()
   window.addEventListener('scroll', updateActiveSection, { passive: true })
@@ -61,6 +65,15 @@ onUnmounted(() => {
   <header class="imperial-nav">
     <div class="imperial-nav__bar">
       <p class="imperial-nav__sigil">IMPERIUM ARCHIVE</p>
+      <button
+        class="imperial-nav__spirit"
+        type="button"
+        aria-label="Enter Spirit Command terminal mode"
+        title="Spirit Command"
+        @click="openSpiritCommand"
+      >
+        <Monitor :size="18" />
+      </button>
       <button class="imperial-nav__toggle" type="button" aria-label="Toggle archive navigation" @click="mobileOpen = !mobileOpen">
         <Menu v-if="!mobileOpen" :size="20" />
         <X v-else :size="20" />

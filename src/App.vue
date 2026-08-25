@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { RouterView } from 'vue-router'
 import { Monitor } from '@lucide/vue'
 import ArchiveBoot from './components/ArchiveBoot.vue'
@@ -83,12 +83,21 @@ const switchToGui = () => {
   stage.value = 'ready'
 }
 
+const handleSpiritCommandRequest = () => {
+  switchToTerminal()
+}
+
 onMounted(() => {
+  window.addEventListener('open-spirit-command', handleSpiritCommandRequest)
   const saved = localStorage.getItem(STORAGE_MODE_KEY)
 
   if (saved === 'terminal' || saved === 'gui') {
     savedMode.value = saved
   }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('open-spirit-command', handleSpiritCommandRequest)
 })
 </script>
 
@@ -132,7 +141,7 @@ onMounted(() => {
           title="Spirit Command"
           @click="switchToTerminal"
         >
-          <Monitor :size="18" aria-hidden="true" />
+          <Monitor :size="22" aria-hidden="true" />
         </button>
         <RouterView />
       </div>

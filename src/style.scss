@@ -230,6 +230,23 @@ body {
   padding: 0.5rem;
 }
 
+.imperial-nav__spirit {
+  display: none;
+  border: 1px solid #245c3d;
+  background: linear-gradient(180deg, #030705, #07100b);
+  color: #39ff88;
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
+  border-radius: 2px;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 0 0 0 1px rgba(57, 255, 136, 0.16),
+    inset 0 0 8px rgba(57, 255, 136, 0.05),
+    0 0 8px rgba(57, 255, 136, 0.14);
+}
+
 .imperial-nav__mobile {
   border-top: var(--line);
   padding: 1rem;
@@ -1610,7 +1627,7 @@ main {
 
 @media (max-width: 1024px) {
   .imperial-nav__bar {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto auto;
   }
 
   .imperial-nav__desktop {
@@ -1623,6 +1640,14 @@ main {
 
   .imperial-nav__toggle {
     display: inline-flex;
+  }
+
+  .imperial-nav__spirit {
+    display: inline-flex;
+  }
+
+  .os-spirit-button {
+    display: none !important;
   }
 
   .hero {
@@ -1802,8 +1827,8 @@ main {
   z-index: 60;
   right: 1rem;
   top: 4.1rem;
-  width: 2.45rem;
-  height: 2.45rem;
+  width: 3rem;
+  height: 3rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2172,13 +2197,28 @@ main {
   .os-select__actions {
     grid-template-columns: 1fr;
   }
-
-  .os-spirit-button {
-    right: 0.7rem;
-  }
 }
 
 @media (max-width: 720px) {
+  .os-select {
+    padding: 0.7rem;
+  }
+
+  .os-select__panel {
+    padding: 0.75rem;
+  }
+
+  .os-select__frame {
+    font-size: 0.64rem;
+    line-height: 1.45;
+    letter-spacing: 0.03em;
+  }
+
+  .os-select__actions button {
+    padding: 0.7rem;
+    font-size: 0.7rem;
+  }
+
   .spirit-command {
     padding: 0.7rem;
   }
@@ -2200,8 +2240,4 @@ main {
     flex-wrap: wrap;
   }
 
-  .os-spirit-button {
-    position: static;
-    margin: 0.6rem 0.6rem 0;
-  }
 }
