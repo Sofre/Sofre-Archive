@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { ArrowDownToLine, BookOpenCheck } from '@lucide/vue'
 import ArchiveBoot from '../components/ArchiveBoot.vue'
 import ImperialNavigation from '../components/ImperialNavigation.vue'
 import SystemStatus from '../components/SystemStatus.vue'
@@ -194,17 +193,6 @@ useScrollAnimation('.reveal')
           <figure class="hero__portrait" aria-label="Dushko Sofronievski portrait">
             <img :src="mePortrait" alt="Portrait of Dushko Sofronievski" loading="eager" decoding="async" />
           </figure>
-        </div>
-
-        <div class="hero__actions">
-          <button type="button" @click="goTo('imperium-record')">
-            <ArrowDownToLine :size="16" />
-            ACCESS IMPERIUM RECORD
-          </button>
-          <button type="button" class="secondary" @click="goTo('service-history')">
-            <BookOpenCheck :size="16" />
-            VIEW SERVICE HISTORY
-          </button>
         </div>
       </section>
 

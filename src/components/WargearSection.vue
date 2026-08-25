@@ -18,10 +18,6 @@ import { skillDomains } from '../data/skills'
           <li v-for="system in domain.systems" :key="system.name">
             <div class="wargear__meta">
               <strong>{{ system.name }}</strong>
-              <span>CAL {{ system.calibration }}%</span>
-            </div>
-            <div class="wargear__gauge" role="img" :aria-label="`${system.name} calibration ${system.calibration}%`">
-              <div class="wargear__gauge-fill" :style="{ width: `${system.calibration}%` }" />
             </div>
             <small>{{ system.note }}</small>
           </li>

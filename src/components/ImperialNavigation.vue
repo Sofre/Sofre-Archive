@@ -10,7 +10,34 @@ const props = defineProps<{
 
 const active = ref('hero')
 const mobileOpen = ref(false)
-let observer: IntersectionObserver | null = null
+
+const updateActiveSection = () => {
+  const viewportCenter = window.innerHeight * 0.38
+  let closestId = props.sections[0]?.id ?? 'hero'
+  let closestDistance = Number.POSITIVE_INFINITY
+
+  props.sections.forEach((section) => {
+    const element = document.getElementById(section.id)
+    if (!element) {
+      return
+    }
+
+    const rect = element.getBoundingClientRect()
+    const isVisible = rect.top <= viewportCenter && rect.bottom >= window.innerHeight * 0.2
+
+    if (!isVisible) {
+      return
+    }
+
+    const distance = Math.abs(rect.top - viewportCenter)
+    if (distance < closestDistance) {
+      closestId = section.id
+      closestDistance = distance
+    }
+  })
+
+  active.value = closestId
+}
 
 const scrollToSection = (id: string) => {
   const target = document.getElementById(id)
@@ -19,27 +46,14 @@ const scrollToSection = (id: string) => {
 }
 
 onMounted(() => {
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          active.value = entry.target.id
-        }
-      })
-    },
-    { rootMargin: '-35% 0px -50% 0px', threshold: 0.1 },
-  )
-
-  props.sections.forEach((section) => {
-    const el = document.getElementById(section.id)
-    if (el) {
-      observer?.observe(el)
-    }
-  })
+  updateActiveSection()
+  window.addEventListener('scroll', updateActiveSection, { passive: true })
+  window.addEventListener('resize', updateActiveSection)
 })
 
 onUnmounted(() => {
-  observer?.disconnect()
+  window.removeEventListener('scroll', updateActiveSection)
+  window.removeEventListener('resize', updateActiveSection)
 })
 </script>
 
@@ -74,6 +88,7 @@ onUnmounted(() => {
         v-for="section in sections"
         :key="`m-${section.id}`"
         class="imperial-nav__mobile-item"
+        :class="{ 'is-active': active === section.id }"
         type="button"
         @click="scrollToSection(section.id)"
       >
