@@ -16,6 +16,8 @@ const stage = ref<Stage>('legacy-boot')
 const mode = ref<InterfaceMode>('gui')
 const bootLines = ref<string[]>([])
 const savedMode = ref<InterfaceMode | null>(null)
+const isMobile = ref(false)
+let mobileQueryList: MediaQueryList | null = null
 
 const bootScript = [
   'MECHANICUS SYSTEM INITIALIZATION',
@@ -33,6 +35,11 @@ const bootScript = [
 ]
 
 const isTerminalMode = computed(() => stage.value === 'ready' && mode.value === 'terminal')
+const showMobileSwitchBar = computed(() => stage.value === 'ready' && mode.value === 'gui' && isMobile.value)
+
+const updateIsMobile = () => {
+  isMobile.value = window.matchMedia('(max-width: 720px)').matches
+}
 
 const persistMode = (value: InterfaceMode) => {
   localStorage.setItem(STORAGE_MODE_KEY, value)
@@ -87,8 +94,26 @@ const handleSpiritCommandRequest = () => {
   switchToTerminal()
 }
 
+const handleMechanicusInterfaceRequest = () => {
+  switchToGui()
+}
+
+const handleResetInterfaceRequest = () => {
+  localStorage.removeItem(STORAGE_MODE_KEY)
+  localStorage.removeItem(STORAGE_BOOT_KEY)
+  savedMode.value = null
+  mode.value = 'gui'
+  runBootSequence()
+}
+
 onMounted(() => {
+  updateIsMobile()
+  mobileQueryList = window.matchMedia('(max-width: 720px)')
+  mobileQueryList.addEventListener('change', updateIsMobile)
+
   window.addEventListener('open-spirit-command', handleSpiritCommandRequest)
+  window.addEventListener('open-mechanicus-interface', handleMechanicusInterfaceRequest)
+  window.addEventListener('reset-interface-protocol', handleResetInterfaceRequest)
   const saved = localStorage.getItem(STORAGE_MODE_KEY)
 
   if (saved === 'terminal' || saved === 'gui') {
@@ -97,7 +122,10 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  mobileQueryList?.removeEventListener('change', updateIsMobile)
   window.removeEventListener('open-spirit-command', handleSpiritCommandRequest)
+  window.removeEventListener('open-mechanicus-interface', handleMechanicusInterfaceRequest)
+  window.removeEventListener('reset-interface-protocol', handleResetInterfaceRequest)
 })
 </script>
 
@@ -144,6 +172,13 @@ onUnmounted(() => {
           <Monitor :size="22" aria-hidden="true" />
         </button>
         <RouterView />
+
+        <div v-if="showMobileSwitchBar" class="os-mobile-switch" role="region" aria-label="Mobile system control">
+          <span class="os-mobile-switch__label">MECHANICUS INTERFACE</span>
+          <button type="button" class="os-mobile-switch__button" @click="switchToTerminal">
+            SPIRIT COMMAND
+          </button>
+        </div>
       </div>
     </template>
   </div>

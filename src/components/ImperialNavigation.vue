@@ -10,6 +10,7 @@ const props = defineProps<{
 
 const active = ref('hero')
 const mobileOpen = ref(false)
+const mobileSystemControlOpen = ref(false)
 
 const updateActiveSection = () => {
   const viewportCenter = window.innerHeight * 0.38
@@ -47,6 +48,18 @@ const scrollToSection = (id: string) => {
 
 const openSpiritCommand = () => {
   window.dispatchEvent(new CustomEvent('open-spirit-command'))
+  mobileSystemControlOpen.value = false
+}
+
+const setMechanicusInterface = () => {
+  window.dispatchEvent(new CustomEvent('open-mechanicus-interface'))
+  mobileSystemControlOpen.value = false
+}
+
+const resetInterface = () => {
+  window.dispatchEvent(new CustomEvent('reset-interface-protocol'))
+  mobileSystemControlOpen.value = false
+  mobileOpen.value = false
 }
 
 onMounted(() => {
@@ -69,8 +82,8 @@ onUnmounted(() => {
         class="imperial-nav__spirit"
         type="button"
         aria-label="Enter Spirit Command terminal mode"
-        title="Spirit Command"
-        @click="openSpiritCommand"
+        title="System Control"
+        @click="mobileSystemControlOpen = !mobileSystemControlOpen"
       >
         <Monitor :size="18" />
       </button>
@@ -93,6 +106,22 @@ onUnmounted(() => {
           <span class="imperial-nav__tooltip" role="note">{{ section.info }}</span>
         </button>
       </nav>
+    </div>
+
+    <div v-if="mobileSystemControlOpen" class="imperial-nav__system-control" role="dialog" aria-label="System control panel">
+      <p class="imperial-nav__system-title">SYSTEM CONTROL</p>
+      <button type="button" class="imperial-nav__system-item" @click="setMechanicusInterface">
+        MECHANICUS INTERFACE
+      </button>
+      <button type="button" class="imperial-nav__system-item" @click="openSpiritCommand">
+        SPIRIT COMMAND
+      </button>
+      <button type="button" class="imperial-nav__system-item" @click="mobileSystemControlOpen = false">
+        SYSTEM STATUS: ONLINE
+      </button>
+      <button type="button" class="imperial-nav__system-item imperial-nav__system-item--danger" @click="resetInterface">
+        RESET INTERFACE
+      </button>
     </div>
 
     <div v-if="mobileOpen" class="imperial-nav__mobile" role="dialog" aria-label="Mobile archive terminal">

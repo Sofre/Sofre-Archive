@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { PortfolioData } from '../data/portfolio'
 import { archiveDirectories } from '../data/portfolio'
 
@@ -30,6 +30,12 @@ const history = ref<string[]>([])
 const historyIndex = ref(-1)
 const selectedSuggestion = ref(0)
 const showAssist = ref(true)
+const isMobile = ref(false)
+let mobileQueryList: MediaQueryList | null = null
+
+const updateIsMobile = () => {
+  isMobile.value = window.matchMedia('(max-width: 768px)').matches
+}
 
 const normalize = (value: string) => value.trim().toLowerCase().replace(/\s+/g, ' ')
 
@@ -138,6 +144,23 @@ const ghostText = computed(() => {
 })
 
 const printWelcome = () => {
+  if (isMobile.value) {
+    pushLines('system', [
+      '┌─────────────────────────────┐',
+      '│ ⚙ SPIRIT COMMAND           │',
+      `│ COGITUS // ${props.portfolio.node.padEnd(13).slice(0, 13)} │`,
+      '│ ● ONLINE       MACHINE OK  │',
+      '└─────────────────────────────┘',
+      '',
+      'COGITATOR OS v4.0.1',
+      '',
+      'ARCHIVE ACCESS GRANTED.',
+      '',
+      'TYPE /help FOR COMMANDS.',
+    ])
+    return
+  }
+
   pushLines('system', [
     '╔══════════════════════════════════════════════════════════════════╗',
     '║ SPIRIT COMMAND // COGITUS                                       ║',
@@ -175,6 +198,24 @@ const listRecord = (categoryName: string, recordName: string) => {
 
   if (!category || !record) {
     pushLines('error', ['[ERROR // 0x17]', 'RECORD NOT FOUND IN ARCHIVE.', 'Consult: /srch "<category>"'])
+    return
+  }
+
+  if (isMobile.value) {
+    const desc = record.description.length > 28 ? `${record.description.slice(0, 28)}...` : record.description
+    pushLines('result', [
+      '┌─────────────────────────────┐',
+      `│ ${record.name.toUpperCase().padEnd(27).slice(0, 27)}│`,
+      '│                             │',
+      '│ CATEGORY                    │',
+      `│ ${category.category.padEnd(27).slice(0, 27)}│`,
+      '│                             │',
+      '│ STATUS                      │',
+      '│ OPERATIONAL                 │',
+      '│                             │',
+      `│ ${desc.padEnd(27).slice(0, 27)}│`,
+      '└─────────────────────────────┘',
+    ])
     return
   }
 
@@ -555,6 +596,57 @@ const useSuggestion = (value: string) => {
   inputEl.value?.focus()
 }
 
+const useHistoryCommand = (value: string) => {
+  commandInput.value = value
+  inputEl.value?.focus()
+}
+
+const categoryAssistChips = computed(() => {
+  const trimmed = commandInput.value.trim()
+  if (!trimmed.startsWith('/srch "') || trimmed.includes('"-"')) {
+    return [] as string[]
+  }
+
+  const query = trimmed.replace(/^\/srch\s+"/i, '').replace(/"$/g, '')
+  return props.portfolio.categories
+    .filter((category) => normalize(category.category).includes(normalize(query)))
+    .map((category) => category.category)
+    .slice(0, 8)
+})
+
+const recordAssistChips = computed(() => {
+  const match = commandInput.value.trim().match(/^\/srch\s+"([^"]+)"-"([^"]*)/i)
+  if (!match) {
+    return [] as string[]
+  }
+
+  const category = props.portfolio.categories.find((entry) => normalize(entry.category) === normalize(match[1]))
+  if (!category) {
+    return [] as string[]
+  }
+
+  const query = match[2] ?? ''
+  return category.records
+    .filter((record) => normalize(record.name).includes(normalize(query)))
+    .map((record) => record.name)
+    .slice(0, 8)
+})
+
+const applyCategoryChip = (category: string) => {
+  commandInput.value = `/srch "${category}"`
+  inputEl.value?.focus()
+}
+
+const applyRecordChip = (record: string) => {
+  const match = commandInput.value.trim().match(/^\/srch\s+"([^"]+)"/i)
+  if (!match) {
+    return
+  }
+
+  commandInput.value = `/srch "${match[1]}"-"${record}"`
+  inputEl.value?.focus()
+}
+
 const handleKeydown = (event: KeyboardEvent) => {
   if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'l') {
     event.preventDefault()
@@ -619,15 +711,26 @@ watch(
 )
 
 onMounted(() => {
+  updateIsMobile()
+  mobileQueryList = window.matchMedia('(max-width: 768px)')
+  mobileQueryList.addEventListener('change', updateIsMobile)
+
   printWelcome()
-  nextTick(() => inputEl.value?.focus())
+
+  if (!isMobile.value) {
+    nextTick(() => inputEl.value?.focus())
+  }
+})
+
+onUnmounted(() => {
+  mobileQueryList?.removeEventListener('change', updateIsMobile)
 })
 </script>
 
 <template>
-  <section class="spirit-command">
-    <div class="spirit-command__terminal">
-      <header class="spirit-command__header" aria-label="Cogitator machine header">
+  <section class="spirit-command" :class="{ 'spirit-command--mobile': isMobile }">
+    <div class="spirit-command__terminal" :class="{ 'spirit-command__terminal--mobile': isMobile }">
+      <header class="spirit-command__header" :class="{ 'spirit-command__header--mobile': isMobile }" aria-label="Cogitator machine header">
         <pre class="spirit-command__frame">┌──────────────────────────────────────────────────────────────┐
 │ ⚙ SPIRIT COMMAND // COGITUS                                 │
 │ COGITATOR NODE: {{ props.portfolio.node }}                                    │
@@ -661,7 +764,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <div v-if="showAssist && suggestions.length" class="spirit-command__assist" role="listbox" aria-label="Command assist">
+      <div v-if="showAssist && suggestions.length" class="spirit-command__assist" :class="{ 'spirit-command__assist--mobile': isMobile }" role="listbox" aria-label="Command assist">
         <p>COMMAND ASSIST // AVAILABLE PROTOCOLS</p>
         <button
           v-for="(suggestion, idx) in suggestions"
@@ -673,30 +776,69 @@ onMounted(() => {
           <span>{{ suggestion.value }}</span>
           <small>{{ suggestion.desc }}</small>
         </button>
-      </div>
 
-      <div class="spirit-command__input-row">
-        <span>&gt;</span>
-        <div class="spirit-command__input-wrap">
-          <span class="spirit-command__ghost">{{ ghostText }}</span>
-          <input
-            ref="inputEl"
-            v-model="commandInput"
-            type="text"
-            class="spirit-command__input"
-            autocomplete="off"
-            @keydown="handleKeydown"
-          />
+        <div v-if="isMobile && categoryAssistChips.length" class="spirit-command__chips">
+          <button
+            v-for="chip in categoryAssistChips"
+            :key="`c-${chip}`"
+            type="button"
+            class="spirit-command__chip"
+            @click="applyCategoryChip(chip)"
+          >
+            {{ chip }}
+          </button>
         </div>
-        <span class="spirit-command__cursor" aria-hidden="true" />
+
+        <div v-if="isMobile && recordAssistChips.length" class="spirit-command__chips">
+          <button
+            v-for="chip in recordAssistChips"
+            :key="`r-${chip}`"
+            type="button"
+            class="spirit-command__chip"
+            @click="applyRecordChip(chip)"
+          >
+            {{ chip.toUpperCase() }}
+          </button>
+        </div>
       </div>
 
-      <div class="spirit-command__toolbar">
-        <button type="button" @click="useSuggestion('/help')">/help</button>
-        <button type="button" @click="useSuggestion('/ls')">/ls</button>
-        <button type="button" @click="useSuggestion('/find ')" >/find</button>
-        <button type="button" @click="useSuggestion('/open /')">/open</button>
-        <button type="button" @click="useSuggestion('/gui')">/gui</button>
+      <div class="spirit-command__input-dock" :class="{ 'spirit-command__input-dock--mobile': isMobile }">
+        <div class="spirit-command__input-row">
+          <span>&gt;</span>
+          <div class="spirit-command__input-wrap">
+            <span class="spirit-command__ghost">{{ ghostText }}</span>
+            <input
+              ref="inputEl"
+              v-model="commandInput"
+              type="text"
+              class="spirit-command__input"
+              autocomplete="off"
+              @focus="showAssist = true"
+              @keydown="handleKeydown"
+            />
+          </div>
+          <span class="spirit-command__cursor" aria-hidden="true" />
+        </div>
+
+        <div class="spirit-command__toolbar">
+          <button type="button" @click="useSuggestion('/help')">/help</button>
+          <button type="button" @click="useSuggestion('/ls')">/ls</button>
+          <button type="button" @click="useSuggestion('/find ')" >/find</button>
+          <button type="button" @click="useSuggestion('/open /')">/open</button>
+          <button type="button" @click="useSuggestion('/gui')">/gui</button>
+        </div>
+
+        <div v-if="isMobile && history.length" class="spirit-command__history" aria-label="Recent commands">
+          <button
+            v-for="(cmd, idx) in [...history].slice(-6).reverse()"
+            :key="`h-${idx}-${cmd}`"
+            type="button"
+            class="spirit-command__history-item"
+            @click="useHistoryCommand(cmd)"
+          >
+            {{ cmd }}
+          </button>
+        </div>
       </div>
     </div>
   </section>

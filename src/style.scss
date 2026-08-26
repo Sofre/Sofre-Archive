@@ -285,6 +285,15 @@ body {
   font-family: var(--font-tech);
 }
 
+.imperial-nav__system-control {
+  display: none;
+}
+
+.imperial-nav__system-title,
+.imperial-nav__system-item {
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+}
+
 main {
   max-width: 1320px;
   margin: 0 auto;
@@ -1713,6 +1722,46 @@ main {
     margin: 0.5rem auto;
     max-height: calc(100vh - 1rem);
   }
+
+  .imperial-nav__system-control {
+    display: block;
+    margin: 0 0.7rem 0.5rem;
+    border: 1px solid rgba(36, 92, 61, 0.85);
+    background: linear-gradient(180deg, rgba(3, 7, 5, 0.97), rgba(7, 16, 11, 0.95));
+    box-shadow:
+      inset 0 0 0 1px rgba(57, 255, 136, 0.09),
+      0 0 10px rgba(57, 255, 136, 0.12);
+    padding: 0.62rem;
+  }
+
+  .imperial-nav__system-title {
+    margin: 0 0 0.5rem;
+    color: #7cffb2;
+    letter-spacing: 0.12em;
+    font-size: 0.62rem;
+  }
+
+  .imperial-nav__system-item {
+    width: 100%;
+    text-align: left;
+    border: 1px solid rgba(36, 92, 61, 0.88);
+    background: rgba(3, 7, 5, 0.88);
+    color: #39ff88;
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    padding: 0.53rem 0.58rem;
+    margin-bottom: 0.38rem;
+  }
+
+  .imperial-nav__system-item:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .imperial-nav__system-item--danger {
+    color: #ff7070;
+    border-color: rgba(168, 44, 44, 0.9);
+    background: rgba(39, 8, 8, 0.8);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1820,6 +1869,10 @@ main {
 
 .os-gui-wrap {
   position: relative;
+}
+
+.os-mobile-switch {
+  display: none;
 }
 
 .os-spirit-button {
@@ -2158,6 +2211,41 @@ main {
   padding: 0.45rem 0.55rem;
 }
 
+.spirit-command__input-dock {
+  display: contents;
+}
+
+.spirit-command__chips {
+  margin-top: 0.55rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+}
+
+.spirit-command__chip {
+  border: 1px solid rgba(36, 92, 61, 0.9);
+  background: rgba(7, 16, 11, 0.85);
+  color: #7cffb2;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+  font-size: 0.63rem;
+  padding: 0.35rem 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+.spirit-command__history {
+  display: none;
+}
+
+.spirit-command__history-item {
+  border: 1px solid rgba(36, 92, 61, 0.85);
+  background: rgba(3, 7, 5, 0.9);
+  color: #39ff88;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+  font-size: 0.62rem;
+  padding: 0.35rem 0.5rem;
+  white-space: nowrap;
+}
+
 @keyframes spirit-cursor-blink {
   0%,
   55% {
@@ -2220,24 +2308,151 @@ main {
   }
 
   .spirit-command {
-    padding: 0.7rem;
+    padding: 0;
+    min-height: 100svh;
   }
 
   .spirit-command__terminal {
-    min-height: 96vh;
+    min-height: 100svh;
+    width: 100%;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  .spirit-command__terminal::after {
+    background: radial-gradient(circle at 50% 50%, transparent 68%, rgba(0, 0, 0, 0.2) 100%);
+  }
+
+  .spirit-command__header--mobile {
+    padding-top: calc(0.7rem + env(safe-area-inset-top, 0px));
+    padding-inline: 0.72rem;
+    padding-bottom: 0.58rem;
+  }
+
+  .spirit-command__frame {
+    font-size: 0.62rem;
+    line-height: 1.4;
   }
 
   .spirit-command__diag {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem;
+  }
+
+  .spirit-command__diag span {
+    font-size: 0.56rem;
+  }
+
+  .spirit-command__indicators {
+    gap: 0.35rem 0.55rem;
+  }
+
+  .spirit-command__indicators span {
+    font-size: 0.56rem;
+  }
+
+  .spirit-command__output {
+    padding: 0.75rem;
+    padding-bottom: 6rem;
+    font-size: 0.68rem;
+  }
+
+  .spirit-command__assist--mobile {
+    max-height: 28svh;
+    overflow: auto;
+    padding: 0.6rem 0.65rem;
+  }
+
+  .spirit-command__assist-item {
+    font-size: 0.62rem;
+    padding: 0.35rem 0.4rem;
   }
 
   .spirit-command__line {
-    font-size: 0.69rem;
+    font-size: 0.66rem;
+    line-height: 1.6;
+  }
+
+  .spirit-command__input-dock--mobile {
+    display: block;
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+    background: rgba(3, 7, 5, 0.96);
+    border-top: 1px solid rgba(36, 92, 61, 0.9);
+    padding-bottom: calc(0.55rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .spirit-command__input-row {
+    padding: 0.62rem 0.7rem;
+  }
+
+  .spirit-command__input {
+    font-size: 0.72rem;
   }
 
   .spirit-command__toolbar {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0.15rem 0.7rem 0;
+    gap: 0.38rem;
+    scrollbar-width: thin;
+  }
+
+  .spirit-command__toolbar button {
+    white-space: nowrap;
+    font-size: 0.6rem;
+    padding: 0.4rem 0.52rem;
+  }
+
+  .spirit-command__history {
+    display: flex;
+    gap: 0.35rem;
+    overflow-x: auto;
+    padding: 0.35rem 0.7rem 0;
+    scrollbar-width: thin;
+  }
+
+  .os-mobile-switch {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 65;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+    align-items: center;
+    padding: 0.45rem 0.7rem calc(0.45rem + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid rgba(36, 92, 61, 0.86);
+    background: linear-gradient(180deg, rgba(3, 7, 5, 0.96), rgba(7, 16, 11, 0.94));
+  }
+
+  .os-mobile-switch__label,
+  .os-mobile-switch__button {
+    border: 1px solid rgba(36, 92, 61, 0.9);
+    padding: 0.52rem 0.62rem;
+    font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.07em;
+  }
+
+  .os-mobile-switch__label {
+    color: #7cffb2;
+    background: rgba(3, 7, 5, 0.85);
+    text-align: center;
+  }
+
+  .os-mobile-switch__button {
+    color: #39ff88;
+    background: rgba(7, 16, 11, 0.92);
+  }
+
+  main {
+    padding-bottom: 5.6rem;
   }
 
 }

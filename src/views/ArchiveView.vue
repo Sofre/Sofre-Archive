@@ -223,7 +223,7 @@ useScrollAnimation('.reveal')
       <TransmissionPanel />
 
       <footer class="archive-footer reveal">
-        <p>I DON'T JUST BUILD SOFTWARE. I ENGINEER SYSTEMS.</p>
+        <p>Ἓν οἶδα ὅτι οὐδὲν οἶδα</p>
       </footer>
     </main>
   </div>
