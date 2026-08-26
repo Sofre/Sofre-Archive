@@ -1,24 +1,14 @@
-# Sofre Archive
+# Sofre Archive - Imperium Archive // Warhammer 40k Inspired Engineering Portfolio
 
-Sofre Archive is a Warhammer-inspired engineering portfolio built with Vue 3, TypeScript, and Vite.
 
-The project presents one portfolio data source through two operating protocols:
-- Mechanicus Interface (graphical portfolio)
-- Spirit Command // Cogitus (terminal portfolio)
+## SOON
 
-## Versioning
+- Decker Mobile Version 
 
-## Version 1.0 (Previous Version)
-Version 1.0 was the original graphical archive portfolio experience:
-- Single-interface portfolio flow (GUI-focused)
-- Themed visual sections for profile, education, experience, projects, research, and contact
-- Wargear as a visual technical archive section
-- Navigation and animation system based on section scrolling
+## PATCH 2.0.1 (Current Version)
+Version 2.0.1 refines interaction behavior, responsive controls, and terminal visual consistency.
 
-## Version 2.0 (Base Release)
-Version 2.0 introduced a full operating-system style interaction model on top of the original site.
-
-### Implemented in 2.0
+### Implemented in 2.0.0
 - Added a two-stage startup pipeline:
   - Legacy archive loading-bar boot sequence first
   - New Mechanicus protocol boot and interface selection flow second
@@ -55,24 +45,24 @@ Version 2.0 introduced a full operating-system style interaction model on top of
 - /clear
 - /gui
 
-## Version 2.0.1 (Current Version)
-Version 2.0.1 refines interaction behavior, responsive controls, and terminal visual consistency.
 
-### Implemented in 2.0.1
-- Improved startup flow behavior after protocol selection and persisted mode handling
-- Updated mobile navigation integration for Spirit Command entry
-- Removed duplicate CLI entry behavior on mobile by enforcing a single mobile trigger path
-- Increased desktop CLI floating button size for better visibility and accessibility
-- Applied consistent CRT-green terminal styling across additional archive terminal text blocks
-- Adjusted mobile interface-protocol selector sizing for better phone readability
+## Tech Stack
 
-## Stack
+### Development 
 - Vue 3
 - TypeScript
 - Vite
 - Vue Router
 - GSAP
-- Sass
+
+### Deployment
+- Vercel
+- Production deployment via Git repository
+- Automatic deployments on push
+
+### Version Control
+- Git
+- GitHub
 
 ## Project Structure
 - src/views: top-level page views
@@ -105,6 +95,4 @@ Preview production build:
 npm run preview
 ```
 
-## Notes
-- Version 2.0 is additive and extends the original archive with protocol-based interaction.
-- Version 1.0 refers to the previous GUI-first baseline before protocolized terminal operation was introduced.
+
